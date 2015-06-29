@@ -1,30 +1,30 @@
-#ifndef INSTANCE_H_
-#define INSTANCE_H_
+#ifndef Instance_H_
+#define Instance_H_
+#include "settings.h"
+
+void print_output_header(char* path);
+double cost(double y, Demand d, BH bh);
 
 class Instance{
  public:
-  char m_demand_type;
-  double m_demand_param_1;
-  double m_demand_param_2;
-  double m_epsilon;
-  double m_delta;
-  double m_b;
-  double m_h;
-  double m_y_star;
-  double m_y_hat;
-  double m_c_hat;
-  double m_c_star;
-  bool m_within_eps;
-  
-  Instance(char demand_type,
-	   double demand_param_1,
-	   double demand_param_2,
-	   double epsilon,
-	   double delta,
-	   double b,
-	   double h);
+  int reps;
+  Demand demand;
+  double epsilon;
+  double delta;
+  BH bh;
+  double N;
+  double y_hat;
+  double y_star;
+  double c_hat;
+  double c_star;
+  double SAA_within_eps;
+  double SAA_eps_avg;
+  double SAA_eps_std;
+  Instance();
+  Instance(double p_reps, Demand p_demand, double p_epsilon, double p_delta, BH p_bh);
 
   void evaluate();
+  void print_output(char* path);
 };
 
-#endif // INSTANCE_H_
+#endif // Instance_H_
