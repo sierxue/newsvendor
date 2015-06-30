@@ -34,6 +34,7 @@ Settings::Settings() {
   epsilon.push_back(0);
   delta.push_back(0);
   bh.push_back(BH());
+  N_frac.push_back(1);
 } 
 
 Settings::Settings(char* path) {
@@ -50,6 +51,11 @@ Settings::Settings(char* path) {
     while (fgets(line_buffer, 1024, file)) {
       if (strncmp("reps", line_buffer, 4) == 0) {
 	sscanf(line_buffer, "%s %d", &param, &reps);
+      }
+      else if (strncmp("N_frac", line_buffer, 5) == 0) {
+        double tmp_N_frac;
+	sscanf(line_buffer, "%s %lf", &param, &tmp_N_frac);
+	N_frac.push_back(tmp_N_frac);
       }
       else if (strncmp("demand", line_buffer, 5) == 0) {
         char tmp_type;

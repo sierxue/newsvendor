@@ -1,26 +1,41 @@
 #include <iostream>
-#include "random.h"
+#include "settings.h"
+#include "instance.h"
 using namespace std;
 
 int main (int argc, char* argv[]) {
 
-  char* settings_file = argv[1];
-  char* demand_file = argv[2];
-  char* epsilon_file = argv[3];
-  char* delta_file = argv[4];
-  char* bh_file = argv[5];
-  char* output_file = argv[6];
-  
-  
+  Settings settings = Settings(argv[1]);
 
+  int count = 1;
+  int max = settings.demands.size()*
+    settings.epsilon.size()*
+    settings.delta.size()*
+    settings.bh.size()*
+    settings.N_frac.size();
   
-  Rand rnd;
-  double x = rnd.uniform(0,1);
-  double y = rnd.uniform(0,1);
-  cout << x << y << endl;
-  cout << "argc = " << argc << endl;
-  for(int i = 0; i < argc; i++)
-    cout << "arv[" << i << "] = " << argv[i] << endl;
-  cout << "Hello, world, bitches!\n";
+  print_output_header(argv[2]);
+  for(int i1 = 0; i1 < settings.demands.size(); i1++) {
+    for(int i2 = 0; i2 < settings.epsilon.size(); i2++) {
+      for(int i3 = 0; i3 < settings.delta.size(); i3++) {
+	for(int i4 = 0; i4 < settings.bh.size(); i4++) {
+	  for(int i5 = 0; i5 < settings.N_frac.size(); i5++) {
+
+	    cout << "Evaluating " << count << " of " << max << endl;
+	    count++;
+	    Instance instance = Instance(settings.reps,
+					 settings.demands[i1],
+					 settings.epsilon[i2],
+					 settings.delta[i3],
+					 settings.bh[i4],
+					 settings.N_frac[i5]);
+	    instance.evaluate();
+	    instance.print_output(argv[2]);
+	  }
+	}
+      }
+    }
+  }
+  
   return 0;
 }

@@ -1,7 +1,10 @@
+
 CC := g++ 
 SRCDIR := src
 BUILDDIR := build
 TARGET := bin/runner
+TEST_IN := test/input.txt
+TEST_OUT := test/output.csv
 
 SRCEXT := cpp
 SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
@@ -21,6 +24,8 @@ $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
 clean:
 	@echo " Cleaning..."; 
 	@echo " $(RM) -r $(BUILDDIR) $(TARGET)"; $(RM) -r $(BUILDDIR) $(TARGET)
+	rm -f $(TESTS) gtest.a gtest_main.a *.o
 
-test:
-	$(CC) $(CFLAGS) test/test.cpp $(INC) $(LIB) -o bin/tester
+tester:
+	@echo " $(TARGET) $(TEST_IN) $(TEST_OUT)"; $(TARGET) $(TEST_IN) $(TEST_OUT)
+	@echo " more $(TEST_OUT)"; more $(TEST_OUT)

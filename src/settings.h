@@ -29,6 +29,7 @@ class Settings{
   vector<double> epsilon;
   vector<double> delta;
   vector<BH> bh;
+  vector<double> N_frac;
   Settings();
   Settings(char* path);
 };

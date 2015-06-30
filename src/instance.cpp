@@ -12,14 +12,16 @@ Instance::Instance() {
   epsilon = 0;
   delta = 0;
   bh = BH();
+  N_frac = 1;
 }
 
-Instance::Instance(double p_reps, Demand p_demand, double p_epsilon, double p_delta, BH p_bh) {
+Instance::Instance(double p_reps, Demand p_demand, double p_epsilon, double p_delta, BH p_bh, double p_N_frac) {
   reps = p_reps;
   demand = p_demand;
   epsilon = p_epsilon;
   delta = p_delta;
   bh = p_bh;
+  N_frac = p_N_frac;
 }
 
 void Instance::evaluate() {
@@ -28,14 +30,13 @@ void Instance::evaluate() {
   vector<double> SAA_eps;
   double wins;
   
-
   // Calculate optimal inventory and cost
   y_star = demand.lower_bound + (demand.upper_bound - demand.lower_bound)*(bh.b/(bh.b+bh.h));
   c_star = cost(y_star, demand, bh);
 
   // Calculate sample average approximation
-  N = ceil((9.0/(2.0*pow(epsilon,2)))*pow(min(bh.b,bh.h)/(bh.b+bh.h),-2)*log(2.0/delta));
-
+  N = ceil(N_frac*(9.0/(2.0*pow(epsilon,2)))*pow(min(bh.b,bh.h)/(bh.b+bh.h),-2)*log(2.0/delta));
+  
   // Main loop
   for(int i = 0; i < reps; i++) {
     samples = vector<double>(); // Clears memory
@@ -77,6 +78,7 @@ void Instance::print_output(char* path) {
   file << delta << ",";
   file << bh.b << ",";
   file << bh.h << ",";
+  file << N_frac << ",";
   file << N << ",";
   file << y_star << ",";
   file << c_star << ",";
@@ -89,9 +91,9 @@ void Instance::print_output(char* path) {
 void print_output_header(char* path) {
   ofstream file;
   file.open(path,ios::out);
-  file << "reps,demand_type,lower_bound,upper_bound,epsilon,delta,b,h,N,y_star,c_star,SAA_within_eps,SAA_eps_avg,SAA_eps_std\n";
+  file << "reps,demand_type,lower_bound,upper_bound,epsilon,delta,b,h,N_frac,N,y_star,c_star,SAA_within_eps,SAA_eps_avg,SAA_eps_std\n";
 }
-  
+
 double cost(double y, Demand d, BH bh) {
   return (pow(y,2)*(bh.h+bh.b))/2.0 - y*(bh.h*d.lower_bound + bh.b*d.upper_bound) + (bh.h*pow(d.lower_bound,2) + bh.b*pow(d.upper_bound,2))/2.0;
 }
