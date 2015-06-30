@@ -26,8 +26,6 @@ class Settings{
  public:
   int reps;
   vector<Demand> demands;
-  vector<double> epsilon;
-  vector<double> delta;
   vector<BH> bh;
   vector<double> N_frac;
   Settings();

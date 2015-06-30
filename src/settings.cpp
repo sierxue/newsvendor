@@ -31,8 +31,6 @@ BH::BH(double p_b, double p_h) {
 Settings::Settings() {
   reps = 0;
   demands.push_back(Demand());
-  epsilon.push_back(0);
-  delta.push_back(0);
   bh.push_back(BH());
   N_frac.push_back(1);
 } 
@@ -64,16 +62,6 @@ Settings::Settings(char* path) {
         sscanf(line_buffer, "%s %c %lf %lf", &param, &tmp_type, &tmp_param1, &tmp_param2);
 	Demand demand = Demand(tmp_type, tmp_param1, tmp_param2);
 	demands.push_back(demand);
-      }
-      else if (strncmp("epsilon", line_buffer, 7) == 0) {
-        double tmp_epsilon;
-	sscanf(line_buffer, "%s %lf", &param, &tmp_epsilon);
-	epsilon.push_back(tmp_epsilon);
-      }
-      else if (strncmp("delta", line_buffer, 5) == 0) {
-	double tmp_delta;
-	sscanf(line_buffer, "%s %lf", &param, &tmp_delta);
-	delta.push_back(tmp_delta);
       }
       else if (strncmp("bh", line_buffer, 1) == 0) {
 	double tmp_b;

@@ -9,17 +9,13 @@ using namespace std;
 Instance::Instance() {
   reps = 0;
   demand = Demand();
-  epsilon = 0;
-  delta = 0;
   bh = BH();
   N_frac = 1;
 }
 
-Instance::Instance(double p_reps, Demand p_demand, double p_epsilon, double p_delta, BH p_bh, double p_N_frac) {
+Instance::Instance(double p_reps, Demand p_demand, BH p_bh, double p_N_frac) {
   reps = p_reps;
   demand = p_demand;
-  epsilon = p_epsilon;
-  delta = p_delta;
   bh = p_bh;
   N_frac = p_N_frac;
 }
@@ -35,7 +31,7 @@ void Instance::evaluate() {
   c_star = cost(y_star, demand, bh);
 
   // Calculate sample average approximation
-  N = ceil(N_frac*(9.0/(2.0*pow(epsilon,2)))*pow(min(bh.b,bh.h)/(bh.b+bh.h),-2)*log(2.0/delta));
+  N = 1000*N_frac;
   
   // Main loop
   for(int i = 0; i < reps; i++) {
@@ -51,13 +47,13 @@ void Instance::evaluate() {
     if(c_hat < c_star) 
       cout << "ERROR: Simulated cost is better than optimal.";
     
-    if((1+epsilon)*c_star > c_hat) 
-      wins++;
+    //    if((1+epsilon)*c_star > c_hat) 
+    //  wins++;
 
   }
 
   // Calculate statistics
-  SAA_within_eps = wins/double(reps);
+  //SAA_within_eps = wins/double(reps);
   SAA_eps_avg = accumulate(SAA_eps.begin(), SAA_eps.end(), 0.0)/double(SAA_eps.size());
 
   double SAA_eps_var = 0;
@@ -74,15 +70,12 @@ void Instance::print_output(char* path) {
   file << demand.type << ",";
   file << demand.lower_bound << ",";
   file << demand.upper_bound << ",";
-  file << epsilon << ",";
-  file << delta << ",";
   file << bh.b << ",";
   file << bh.h << ",";
   file << N_frac << ",";
   file << N << ",";
   file << y_star << ",";
   file << c_star << ",";
-  file << SAA_within_eps << ",";
   file << SAA_eps_avg << ",";
   file << SAA_eps_std << "\n";
   file.close();
@@ -91,7 +84,7 @@ void Instance::print_output(char* path) {
 void print_output_header(char* path) {
   ofstream file;
   file.open(path,ios::out);
-  file << "reps,demand_type,lower_bound,upper_bound,epsilon,delta,b,h,N_frac,N,y_star,c_star,SAA_within_eps,SAA_eps_avg,SAA_eps_std\n";
+  file << "reps,demand_type,lower_bound,upper_bound,b,h,N_frac,N,y_star,c_star,SAA_eps_avg,SAA_eps_std\n";
 }
 
 double cost(double y, Demand d, BH bh) {
