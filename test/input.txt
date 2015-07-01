@@ -1,13 +1,14 @@
-reps 1000
-N_frac 1.0
-N_frac 0.9
-N_frac 0.8
-N_frac 0.7
-N_frac 0.6
-N_frac 0.5
-N_frac 0.4
-N_frac 0.3
-N_frac 0.2
+reps 100
 N_frac 0.1
+N_frac 0.2
+N_frac 0.3
+N_frac 0.4
+N_frac 0.5
+N_frac 0.6
+N_frac 0.7
+N_frac 0.8
+N_frac 0.9
+N_frac 1.0
 demand u 0 1
-bh 6 6
+bh 1 1
+

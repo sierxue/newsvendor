@@ -16,7 +16,6 @@ int main (int argc, char* argv[]) {
   for(int i1 = 0; i1 < settings.demands.size(); i1++) {
     for(int i2 = 0; i2 < settings.bh.size(); i2++) {
       for(int i3 = 0; i3 < settings.N_frac.size(); i3++) {
-	
 	cout << "Evaluating " << count << " of " << max << endl;
 	count++;
 	Instance instance = Instance(settings.reps,
