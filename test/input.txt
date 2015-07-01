@@ -1,4 +1,4 @@
-reps 100
+reps 500
 N_frac 0.1
 N_frac 0.2
 N_frac 0.3
