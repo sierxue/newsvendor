@@ -29,4 +29,4 @@ clean:
 tester:
 	@echo " $(TARGET) $(TEST_IN) $(TEST_OUT)"; $(TARGET) $(TEST_IN) $(TEST_OUT)
 	@echo " more $(TEST_OUT)"; more $(TEST_OUT)
-	@echo python2.7 src/plot_epsilon.py
+	@echo python2.7 src/plot_epsilon.py; python2.7 src/plot_epsilon.py

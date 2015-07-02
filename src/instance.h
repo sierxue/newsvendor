@@ -2,33 +2,27 @@
 #define Instance_H_
 #include "settings.h"
 
-class XY{
- public:
-  double x;
-  double y;
-  XY();
-  XY(double x, double y);
-};
-
 class Instance{
  public:
   int reps;
   Demand demand;
+  double epsilon;
+  double delta;
   BH bh;
   double N_frac;
   double N;
   double y_hat;
-  double y_hat_smoothed;
+  double y_hat_interp;
   double y_star;
   double c_hat;
-  double c_hat_smoothed;
+  double c_hat_interp;
   double c_star;
   double SAA_eps_avg;
   double SAA_eps_conf;
-  double SAA_eps_avg_smoothed;
-  double SAA_eps_conf_smoothed;
+  double SAA_eps_avg_interp;
+  double SAA_eps_conf_interp;
   Instance();
-  Instance(double p_reps, Demand p_demand, BH p_bh, double p_N_frac);
+  Instance(double p_reps, Demand p_demand, double p_epsilon, double p_delta, BH p_bh, double p_N_frac);
   
   void evaluate();
   void print_output(char* path);
@@ -36,9 +30,7 @@ class Instance{
 
 void print_output_header(char* path);
 double cost_uniform(double y, double lower, double upper, double height, BH bh);
-double cost_smoothed(double y, vector<XY> CDF, BH bh);
-vector<XY> CDF_from_samples(vector<double> samples);
-double interp_eval(vector<XY>, double input);
+double interp_eval(vector<double> samples, double input);
 double average(vector<double> data);
 double conf(vector<double> data, int N);
 
