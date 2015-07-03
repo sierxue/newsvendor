@@ -1,4 +1,5 @@
 #include <iostream>
+#include "random.h"
 #include "settings.h"
 #include "instance.h"
 using namespace std;
@@ -7,13 +8,26 @@ int main (int argc, char* argv[]) {
 
   Settings settings = Settings(argv[1]);
 
+  // Calculate all random samples
+  vector<vector<double> > samples;
+  Rand rnd;
+  double max_N = 1000*(*max_element(settings.N_frac.begin(), settings.N_frac.end()));
+  for(int i = 0; i < settings.reps; i++) {
+    samples.push_back(vector<double>());
+    for(int j = 0; j < max_N; j++) {
+      samples[i].push_back(rnd.uniform(0,1));
+    }
+  }
+
+  // Calculate number of runs
   int count = 1;
   int max = settings.demands.size()*
     settings.epsilon.size()*
     settings.delta.size()*
     settings.bh.size()*
     settings.N_frac.size();
-  
+
+  // Evaluate and output results from each run
   print_output_header(argv[2]);
   for(int i1 = 0; i1 < settings.demands.size(); i1++) {
     for(int i2 = 0; i2 < settings.epsilon.size(); i2++) {
@@ -28,7 +42,7 @@ int main (int argc, char* argv[]) {
 					 settings.delta[i3],
 					 settings.bh[i4],
 					 settings.N_frac[i5]);
-	    instance.evaluate();
+	    instance.evaluate(samples);
 	    instance.print_output(argv[2]);
 	  }
 	}

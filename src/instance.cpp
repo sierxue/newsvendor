@@ -24,11 +24,10 @@ Instance::Instance(double p_reps, Demand p_demand, double p_epsilon, double p_de
   N_frac = p_N_frac;
 }
 
-void Instance::evaluate() {
-  Rand rnd;
-  vector<double> samples;
+void Instance::evaluate(vector<vector<double> > samples) {
+
+  vector<double> d_samples;
   vector<double> SAA_eps;
-  vector<double> SAA_eps_interp;
 
   double upper = demand.upper_bound;
   double lower = demand.lower_bound;
@@ -43,44 +42,24 @@ void Instance::evaluate() {
   
   // Main loop
   for(int i = 0; i < reps; i++) {
-    samples = vector<double>(); // Clears vector
+    d_samples = vector<double>(); // Clears vector
     for(int j = 0; j < N; j++) {
-      samples.push_back(rnd.uniform(lower, upper));
+      d_samples.push_back(lower + samples[i][j]*(upper-lower));
     }
-    sort(samples.begin(), samples.end());
+    sort(d_samples.begin(), d_samples.end());
 
     // Calculate SAA
-    y_hat = samples[ceil((samples.size()*quantile)-1)]; // Find the b/(b+h)th quantile
+    y_hat = d_samples[ceil((d_samples.size()*quantile)-1)]; // Find the b/(b+h)th quantile
     c_hat = cost_uniform(y_hat, lower, upper, 1/(upper-lower), bh);
     SAA_eps.push_back((c_hat/c_star)-1);
-
-    // Calculate interpolated
-    y_hat_interp = interp_eval(samples, quantile);
-    c_hat_interp = cost_uniform(y_hat_interp, lower, upper, 1/(upper-lower), bh);
-    SAA_eps_interp.push_back((c_hat_interp/c_star)-1);
 
     if(c_hat < c_star) 
       cout << "ERROR: Simulated cost is better than optimal." << endl;
   }
-  /*
-  samples.clear();
-  for(int j = 0; j < 3; j++) 
-    samples.push_back(rnd.uniform(0,1));
-  sort(samples.begin(),samples.end());
-  quantile = 0.5;
-  y_hat = samples[ceil((samples.size()*quantile)-1)]; // Find the b/(b+h)th quantile
-  cout <<"1: "<< samples[0] << endl;
-  cout <<"2: "<< samples[1] << endl;
-  cout <<"3: "<< samples[2] << endl;
-  cout <<"y_hat: "<< y_hat << endl;
-  cout <<"y_hat_interp: "<< interp_eval(samples, quantile) << endl;;
-  */
 
   // Calculate statistics
   SAA_eps_avg = average(SAA_eps);
   SAA_eps_conf = conf(SAA_eps, reps);
-  //SAA_eps_avg_interp = average(SAA_eps_interp);
-  //SAA_eps_conf_interp = conf(SAA_eps_interp, reps);
 }
 
 void Instance::print_output(char* path) {

@@ -24,7 +24,7 @@ class Instance{
   Instance();
   Instance(double p_reps, Demand p_demand, double p_epsilon, double p_delta, BH p_bh, double p_N_frac);
   
-  void evaluate();
+  void evaluate(vector<vector<double> > samples);
   void print_output(char* path);
 };
 
