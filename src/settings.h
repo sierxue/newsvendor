@@ -9,8 +9,9 @@ class Demand{
   char type;
   double lower_bound;
   double upper_bound;
+  double lambda;
   Demand();
-  Demand(char p_type, double p_lower_bound, double p_upper_bound);
+  Demand(char p_type, double p_param2, double p_param1);
   double draw_random();
 };
 

@@ -29,7 +29,7 @@ class Instance{
 };
 
 void print_output_header(char* path);
-double cost_uniform(double y, double lower, double upper, double height, BH bh);
+double cost(double y, Demand demand, BH bh);
 double interp_eval(vector<double> samples, double input);
 double average(vector<double> data);
 double conf(vector<double> data, int N);

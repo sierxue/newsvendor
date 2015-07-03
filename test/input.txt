@@ -12,6 +12,7 @@ N_frac 0.012
 N_frac 0.013
 N_frac 0.014
 N_frac 0.015
+demand e 1 y
 demand u 0 1
-bh 1 3
+bh 1 1
 

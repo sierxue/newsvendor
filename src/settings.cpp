@@ -10,12 +10,24 @@ Demand::Demand() {
   type = 'u';
   lower_bound = 0;
   upper_bound = 1;
+  lambda = 0;
 }
 
-Demand::Demand(char p_type, double p_lower_bound, double p_upper_bound) {
+Demand::Demand(char p_type, double p_param1, double p_param2) {
   type = p_type;
-  lower_bound = p_lower_bound;
-  upper_bound = p_upper_bound;
+
+  if(type == 'u') {
+    lower_bound = p_param1;
+    upper_bound = p_param2;
+    lambda = 0;
+  }
+  else if(type == 'e') {
+    lower_bound = 0;
+    upper_bound = 1;
+    lambda = p_param1;
+  }
+  else
+    cout << "Demand type not found." << endl;
 }
 
 BH::BH() {
