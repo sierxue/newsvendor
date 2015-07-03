@@ -116,10 +116,6 @@ double cost(double y, Demand demand, BH bh) {
   }
   else if(demand.type == 'e') {
     double lambda = demand.lambda;
-    cout << "LAMB: " << lambda << endl;
-    cout << "y:::: " << y << endl;
-    cout << "1st:: " << (1/lambda)*exp(-lambda*y)*(b+h) << endl;
-    cout << "2nd:: " << h/lambda << endl;
     return (1/lambda)*exp(-lambda*y)*(b+h) - (h/lambda) + h*y;
   }
   else
