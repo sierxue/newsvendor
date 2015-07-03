@@ -35,7 +35,7 @@ void Instance::evaluate() {
   
   // Calculate optimal inventory and cost
   double quantile = bh.b/(bh.b + bh.h);
-  y_star = demand.lower_bound + (upper - lower)*quantile;
+  y_star = lower + (upper - lower)*quantile;
   c_star = cost_uniform(y_star, lower, upper, 1/(upper-lower), bh);
 
   // Calculate sample average approximation N
@@ -61,11 +61,8 @@ void Instance::evaluate() {
 
     if(c_hat < c_star) 
       cout << "ERROR: Simulated cost is better than optimal." << endl;
-    //if(c_hat_smoothed < c_star) 
-      //      cout << "ERROR: Smoothed cost is better than optimal." << endl;
   }
-
-  
+  /*
   samples.clear();
   for(int j = 0; j < 3; j++) 
     samples.push_back(rnd.uniform(0,1));
@@ -77,13 +74,13 @@ void Instance::evaluate() {
   cout <<"3: "<< samples[2] << endl;
   cout <<"y_hat: "<< y_hat << endl;
   cout <<"y_hat_interp: "<< interp_eval(samples, quantile) << endl;;
-  
+  */
 
   // Calculate statistics
   SAA_eps_avg = average(SAA_eps);
   SAA_eps_conf = conf(SAA_eps, reps);
-  SAA_eps_avg_interp = average(SAA_eps_interp);
-  SAA_eps_conf_interp = conf(SAA_eps_interp, reps);
+  //SAA_eps_avg_interp = average(SAA_eps_interp);
+  //SAA_eps_conf_interp = conf(SAA_eps_interp, reps);
 }
 
 void Instance::print_output(char* path) {
@@ -102,16 +99,16 @@ void Instance::print_output(char* path) {
   file << y_star << ",";
   file << c_star << ",";
   file << SAA_eps_avg << ",";
-  file << SAA_eps_conf << ",";
-  file << SAA_eps_avg_interp << ",";
-  file << SAA_eps_conf_interp << "\n";
+  file << SAA_eps_conf << "\n";
+  //file << SAA_eps_avg_interp << ",";
+  //file << SAA_eps_conf_interp << "\n";
   file.close();
 }
 
 void print_output_header(char* path) {
   ofstream file;
   file.open(path,ios::out);
-  file << "reps,demand_type,lower_bound,upper_bound,epsilon,delta,b,h,N_frac,N,y_star,c_star,SAA_eps_avg,SAA_eps_conf,SAA_eps_avg_interp,SAA_eps_conf_interp\n";
+  file << "reps,demand_type,lower_bound,upper_bound,epsilon,delta,b,h,N_frac,N,y_star,c_star,SAA_eps_avg,SAA_eps_conf\n";
 }
 
 double cost_uniform(double y, double lower, double upper, double height, BH bh) {
@@ -119,7 +116,6 @@ double cost_uniform(double y, double lower, double upper, double height, BH bh) 
 }
 
 double interp_eval(vector<double> samples, double fractile) {
-
   if(!is_sorted(samples.begin(), samples.end()))
     sort(samples.begin(), samples.end());
 
@@ -131,7 +127,7 @@ double interp_eval(vector<double> samples, double fractile) {
     double true_ind = fractile*(samples.size())-1;
     int lower_ind = floor(true_ind);
     int upper_ind = ceil(true_ind);
-    //     cout << true_ind << ":" << lower_ind << ":" << upper_ind << endl;
+    // cout << true_ind << ":" << lower_ind << ":" << upper_ind << endl;
     if(lower_ind == upper_ind)
       return samples[lower_ind];
     else
