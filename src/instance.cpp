@@ -70,6 +70,9 @@ void Instance::evaluate(vector<vector<double> > samples) {
   // Calculate statistics
   SAA_eps_avg = average(SAA_eps);
   SAA_eps_conf = conf(SAA_eps, reps);
+
+  eps_delta_fractile = SAA_eps[ceil((SAA_eps.size()*(1-delta))-1)]; 
+  eps_fraction = eps_delta_fractile/epsilon;
 }
 
 void Instance::print_output(char* path) {
@@ -94,14 +97,16 @@ void Instance::print_output(char* path) {
   file << y_star << ",";
   file << c_star << ",";
   file << SAA_eps_avg << ",";
-  file << SAA_eps_conf << "\n";
+  file << SAA_eps_conf << ",";
+  file << eps_delta_fractile << ",";
+  file << eps_fraction << "\n";
   file.close();
 }
 
 void print_output_header(char* path) {
   ofstream file;
   file.open(path,ios::out);
-  file << "reps,demand_type,param1,param2,epsilon,delta,b,h,N_frac,N,y_star,c_star,SAA_eps_avg,SAA_eps_conf\n";
+  file << "reps,demand_type,param1,param2,epsilon,delta,b,h,N_frac,N,y_star,c_star,SAA_eps_avg,SAA_eps_conf,eps_delta_fractile,eps_fraction\n";
 }
 
 double cost(double y, Demand demand, BH bh) {

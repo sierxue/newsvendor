@@ -1,19 +1,13 @@
-reps 1000
-epsilon 0.05
+reps 100
+epsilon 0.1
+epsilon 0.25
 delta 0.05
-N_frac 0.1
-N_frac 0.2
-N_frac 0.3
-N_frac 0.4
-N_frac 0.5
-N_frac 0.6
-N_frac 0.7
-N_frac 0.8
-N_frac 0.9
+delta 0.1
 N_frac 1.0
 demand e 1 y
 demand e 10 y
 demand u 0 1
 demand u 1 10
-bh 3 1
-
+bh 6 6
+bh 3 9
+bh 9 3 

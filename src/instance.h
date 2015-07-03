@@ -21,6 +21,8 @@ class Instance{
   double SAA_eps_conf;
   double SAA_eps_avg_interp;
   double SAA_eps_conf_interp;
+  double eps_delta_fractile;
+  double eps_fraction;
   Instance();
   Instance(double p_reps, Demand p_demand, double p_epsilon, double p_delta, BH p_bh, double p_N_frac);
   
