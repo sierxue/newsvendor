@@ -31,7 +31,7 @@ void Instance::evaluate(vector<vector<double> > samples) {
 
   double upper = demand.upper_bound;
   double lower = demand.lower_bound;
-  
+
   // Calculate optimal inventory and cost
   double quantile = bh.b/(bh.b + bh.h);
   if(demand.type == 'u')
@@ -62,7 +62,7 @@ void Instance::evaluate(vector<vector<double> > samples) {
     y_hat = d_samples[ceil((d_samples.size()*quantile)-1)]; // Find the b/(b+h)th quantile
     c_hat = cost(y_hat, demand, bh);
     SAA_eps.push_back((c_hat/c_star)-1);
-
+    
     if(c_hat < c_star) 
       cout << "ERROR: Simulated cost is better than optimal." << endl;
   }
@@ -92,7 +92,6 @@ void Instance::print_output(char* path) {
   file << delta << ",";
   file << bh.b << ",";
   file << bh.h << ",";
-  file << N_frac << ",";
   file << N << ",";
   file << y_star << ",";
   file << c_star << ",";
@@ -106,7 +105,7 @@ void Instance::print_output(char* path) {
 void print_output_header(char* path) {
   ofstream file;
   file.open(path,ios::out);
-  file << "reps,demand_type,param1,param2,epsilon,delta,b,h,N_frac,N,y_star,c_star,SAA_eps_avg,SAA_eps_conf,eps_delta_fractile,eps_fraction\n";
+  file << "reps,demand_type,param1,param2,epsilon,delta,b,h,N,y_star,c_star,SAA_eps_avg,SAA_eps_conf,eps_delta_fractile,eps_fraction\n";
 }
 
 double cost(double y, Demand demand, BH bh) {

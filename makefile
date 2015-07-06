@@ -26,7 +26,7 @@ clean:
 	@echo " $(RM) -r $(BUILDDIR) $(TARGET)"; $(RM) -r $(BUILDDIR) $(TARGET)
 	rm -f $(TESTS) gtest.a gtest_main.a *.o
 
-tester:
+run:
 	@echo " $(TARGET) $(TEST_IN) $(TEST_OUT)"; $(TARGET) $(TEST_IN) $(TEST_OUT)
 	@echo " more $(TEST_OUT)"; more $(TEST_OUT)
 
